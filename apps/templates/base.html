@@ -32,6 +32,14 @@
         <a href="{% url 'blog:post_draft_list' %}" class="top-menu">
           <i class="fas fa-edit"></i>
         </a>
+        <p class="top-menu">
+          Hello {{ user.username }} 
+          <small>(<a href="{% url 'accounts:logout' %}">Log out</a>)</small>
+        </p>
+      {% else %}
+        <a href="{% url 'accounts:login' %}" class="top-menu">
+          <i class="fas fa-lock"></i>
+        </a>
       {% endif %}
       <h1 class="ml-md-5">
         <a href="{% url 'blog:post_list' %}">Django Girls Blog</a>
