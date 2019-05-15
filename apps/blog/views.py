@@ -1,10 +1,12 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import (
     get_object_or_404,
     redirect,
     render,
 )
 from django.utils import timezone
+from django.views import View
 
 from .forms import PostForm
 from .models import Post
@@ -20,18 +22,22 @@ def post_detail(request, pk):
     return render(request, 'blog/post_detail.html', {'post': post})
 
 
-@login_required
-def post_new(request):
-    if request.method == 'POST':
-        form = PostForm(request.POST)
+class PostNew(LoginRequiredMixin, View):
+    form_class = PostForm
+    template_name = 'blog/post_edit.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
             post.save()
             return redirect('blog:post_detail', pk=post.pk)
-    else:
-        form = PostForm()
-    return render(request, 'blog/post_edit.html', {'form': form})
+        return render(request, self.template_name, {'form': form})
 
 
 @login_required
