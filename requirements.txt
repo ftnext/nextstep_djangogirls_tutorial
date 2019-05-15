@@ -1,1 +1,2 @@
-Django~=2.2.1
+# Mirrors prod
+-r requirements/prod.txt
