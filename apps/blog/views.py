@@ -6,7 +6,7 @@ from django.shortcuts import (
     render,
 )
 from django.utils import timezone
-from django.views import View
+from django.views.generic import CreateView
 
 from .forms import PostForm
 from .models import Post
@@ -22,22 +22,13 @@ def post_detail(request, pk):
     return render(request, 'blog/post_detail.html', {'post': post})
 
 
-class PostNew(LoginRequiredMixin, View):
+class PostNew(LoginRequiredMixin, CreateView):
     form_class = PostForm
     template_name = 'blog/post_edit.html'
 
-    def get(self, request, *args, **kwargs):
-        form = self.form_class()
-        return render(request, self.template_name, {'form': form})
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.save()
-            return redirect('blog:post_detail', pk=post.pk)
-        return render(request, self.template_name, {'form': form})
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
 
 @login_required
