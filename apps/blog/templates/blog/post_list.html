@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load blog_customs %}
 
 {% block content %}
   {% for post in posts %}
@@ -53,7 +54,7 @@
 {% block sidebar %}
   <form method="GET" action="{% url 'blog:post_list' %}">
     <input class="form-control mb-2" type="text" name="keyword"
-      placeholder="Search" aria-label="Search">
+      placeholder="Search" aria-label="Search" value="{{ request.GET|parse_keyword }}">
     <button class="btn btn-secondary" type="submit">
       <i class="fas fa-search"></i>
     </button>
