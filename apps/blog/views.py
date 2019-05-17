@@ -70,12 +70,14 @@ def post_edit(request, pk):
 
 
 @login_required
+@permission_required('blog.view_draft_posts', raise_exception=True)
 def post_draft_list(request):
     posts = Post.objects.filter(published_date__isnull=True)
     return render(request, 'blog/post_draft_list.html', {'posts': posts})
 
 
 @login_required
+@permission_required('blog.publish_post', raise_exception=True)
 def post_publish(request, pk):
     post = get_object_or_404(Post, pk=pk)
     post.publish()
