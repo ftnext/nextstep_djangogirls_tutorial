@@ -22,6 +22,9 @@ class PostList(ListView):
 
     def get_queryset(self):
         posts = Post.objects.filter(published_date__lte=timezone.now())
+        keyword = self.request.GET.get('keyword')
+        if keyword:
+            posts = posts.filter(title__icontains=keyword)
         return posts
 
 
