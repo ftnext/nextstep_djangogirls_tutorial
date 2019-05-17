@@ -3,6 +3,7 @@ from django.contrib.auth.forms import (
     PasswordResetForm,
     SetPasswordForm,
 )
+from django.contrib.auth.models import Group
 from django.contrib.auth.views import (
     PasswordChangeView,
     PasswordChangeDoneView,
@@ -21,6 +22,12 @@ class Register(CreateView):
     template_name = 'accounts/register.html'
     form_class = MyRegisterForm
     success_url = reverse_lazy('blog:post_list')
+
+    def form_valid(self, form):
+        user = form.save()
+        group = Group.objects.get(name='ReaderUser')
+        user.groups.add(group)
+        return super().form_valid(form)
 
 
 class PasswordChange(PasswordChangeView):
