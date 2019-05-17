@@ -16,6 +16,10 @@ class Post(models.Model):
 
     class Meta:
         ordering = ['-published_date', '-created_date']
+        permissions = [
+            ('publish_post', 'Can publish a draft post'),
+            ('view_draft_posts', 'Can view draft posts'),
+        ]
 
     def publish(self):
         self.published_date = timezone.now()
