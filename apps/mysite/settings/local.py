@@ -23,3 +23,8 @@ MIDDLEWARE += [
 ]
 
 INTERNAL_IPS = '127.0.0.1'
+
+
+# Email dummy
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
