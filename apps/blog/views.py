@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.shortcuts import (
     get_object_or_404,
     redirect,
@@ -24,7 +25,9 @@ class PostList(ListView):
         posts = Post.objects.filter(published_date__lte=timezone.now())
         keyword = self.request.GET.get('keyword')
         if keyword:
-            posts = posts.filter(title__icontains=keyword)
+            posts = posts.filter(
+                Q(title__icontains=keyword) | Q(text__icontains=keyword)
+            )
         return posts
 
 
