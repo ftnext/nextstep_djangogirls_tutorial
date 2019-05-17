@@ -2,7 +2,6 @@ from django.contrib.auth.forms import (
     PasswordChangeForm,
     PasswordResetForm,
     SetPasswordForm,
-    UserCreationForm,
 )
 from django.contrib.auth.views import (
     PasswordChangeView,
@@ -15,10 +14,12 @@ from django.contrib.auth.views import (
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
+from accounts.forms import MyRegisterForm
+
 
 class Register(CreateView):
     template_name = 'accounts/register.html'
-    form_class = UserCreationForm
+    form_class = MyRegisterForm
     success_url = reverse_lazy('blog:post_list')
 
 
