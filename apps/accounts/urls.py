@@ -11,4 +11,8 @@ urlpatterns = [
          auth_views.LogoutView.as_view(next_page='blog:post_list'),
          name='logout'),
     path('register/', views.Register.as_view(), name='register'),
+    path('password_change/', views.PasswordChange.as_view(),
+         name='password_change'),
+    path('password_change/done/', views.PasswordChangeDone.as_view(),
+         name='password_change_done'),
 ]

@@ -33,7 +33,7 @@
           <i class="fas fa-edit"></i>
         </a>
         <p class="top-menu">
-          Hello {{ user.username }} 
+          Hello <a href="{% url 'accounts:password_change' %}">{{ user.username }}</a> 
           <small>(<a href="{% url 'accounts:logout' %}">Log out</a>)</small>
         </p>
       {% else %}
