@@ -1,5 +1,11 @@
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import (
+    login_required,
+    permission_required,
+)
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+)
 from django.db.models import Q
 from django.shortcuts import (
     get_object_or_404,
@@ -36,7 +42,9 @@ def post_detail(request, pk):
     return render(request, 'blog/post_detail.html', {'post': post})
 
 
-class PostNew(LoginRequiredMixin, CreateView):
+class PostNew(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    permission_required = 'blog.add_post'
+
     form_class = PostForm
     template_name = 'blog/post_edit.html'
 
@@ -46,6 +54,7 @@ class PostNew(LoginRequiredMixin, CreateView):
 
 
 @login_required
+@permission_required('blog.change_post', raise_exception=True)
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
@@ -74,6 +83,7 @@ def post_publish(request, pk):
 
 
 @login_required
+@permission_required('blog.delete_post', raise_exception=True)
 def post_remove(request, pk):
     post = get_object_or_404(Post, pk=pk)
     post.delete()

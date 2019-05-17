@@ -16,11 +16,13 @@
         Publish
       </a>
     {% endif %}
-    {% if user.is_authenticated %}
+    {% if perms.blog.change_post %}
       <a class="btn btn-secondary mb-2" 
           href="{% url 'blog:post_edit' pk=post.pk %}">
         <i class="fas fa-pencil-alt"></i>
       </a>
+    {% endif %}
+    {% if perms.blog.delete_post %}
       <a class="btn btn-secondary mb-2"
           href="{% url 'blog:post_remove' pk=post.pk %}">
         <i class="fas fa-times"></i>
