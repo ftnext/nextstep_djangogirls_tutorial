@@ -6,15 +6,23 @@ from django.shortcuts import (
     render,
 )
 from django.utils import timezone
-from django.views.generic import CreateView
+from django.views.generic import (
+    CreateView,
+    ListView,
+)
 
 from .forms import PostForm
 from .models import Post
 
 
-def post_list(request):
-    posts = Post.objects.filter(published_date__lte=timezone.now())
-    return render(request, 'blog/post_list.html', {'posts': posts})
+class PostList(ListView):
+    context_object_name = 'posts'
+    template_name = 'blog/post_list.html'
+    paginate_by = 2
+
+    def get_queryset(self):
+        posts = Post.objects.filter(published_date__lte=timezone.now())
+        return posts
 
 
 def post_detail(request, pk):
